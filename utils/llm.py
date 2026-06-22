@@ -3,6 +3,7 @@ import os
 import time, re
 from .text_process import extract_url_tokens
 
+from google.genai.types import GenerateContentConfig
 from google import genai
 
 
@@ -33,11 +34,13 @@ class LLM:
             return True
         return False
 
-    def generate_content(self, model, contents, max_retries=5, base_delay=22):
+    # def generate_content(self, model, contents, max_retries=5, base_delay=22):
+    def generate_content(self, model, contents, temperature=None, max_retries=5, base_delay=22):
+        config = GenerateContentConfig(temperature=temperature) if temperature is not None else None
         for attempt in range(max_retries):
             try:
                 response = self.client.models.generate_content(
-                    model=model, contents=contents
+                    model=model, contents=contents, config=config
                 )
                 return response.text
             except Exception as e:
@@ -89,7 +92,7 @@ class LLM:
         title: {title}
         description: {description}
         """
-        response = self.generate_content("gemini-2.5-flash", prompt.strip())
+        response = self.generate_content("gemini-2.5-flash", prompt.strip(), temperature=0.5)
         return response.strip()
 
 

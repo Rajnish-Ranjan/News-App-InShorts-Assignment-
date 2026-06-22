@@ -63,7 +63,7 @@ class UserQuery(BaseModel):
         - published_before: Extracted time filter. Must be normalized to ISO 8601 format
         """
 
-        response = llm.generate_content("gemini-2.5-flash", analysis_prompt)
+        response = llm.generate_content("gemini-2.5-flash", analysis_prompt, temperature=0)
 
         # clean markdown fences
         cleaned_response = response.strip()
