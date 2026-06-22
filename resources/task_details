@@ -1,0 +1,43 @@
+I cannot directly create or save files into your personal Google Drive or Google Docs. However, I have formatted the content below perfectly for you to copy and paste into a new document.
+Task: Building a Contextual News Data Retrieval System
+Objective
+Design and implement a backend system that can fetch and organize news articles from a data source, simulating different API functionalities, and enrich these articles with LLM-generated insights. This system should demonstrate the ability to:
+Understand the nuances of a user's query, including their location.
+Utilize an LLM to identify key entities, concepts, and the user's intent to refine data retrieval.
+Retrieve data from a pre-defined data source, simulating different API endpoints.
+Process, rank, and enrich the results for relevance and comprehensiveness, considering the user's location.
+Return a JSON response with the most relevant news articles.
+Technical Requirements
+1. LLM Interaction
+Use a publicly available LLM API (e.g., OpenAI, Google Cloud Language API) to process the user's news query.
+Extract relevant entities (e.g., people, organizations, locations, events) and key concepts from the query.
+Determine the user's intent to select the most appropriate data retrieval strategy (simulated API endpoint).
+2. Data Retrieval
+The news article data will be given as a file. You will fetch the data and store it in a database of your choice (SQL or NoSQL).
+3. Data Format
+The data in the news_data file will be organized in JSON files. Each file will contain an array of news articles.
+4. API EndPoints
+"category": Retrieve articles from a specific category (e.g., "Technology", "Business", "Sports").
+"score": Retrieve articles based on a relevance score.
+"search": Retrieve articles based on a search query. Perform a text search within the article title and description.
+"source": Retrieve articles from specific sources (e.g., "New York Times", "Reuters").
+"nearby": Retrieve articles published within a specified radius (e.g., 10km) of a given location (latitude and longitude).
+Bonus API - Trending News by Location
+Implement an additional API endpoint (GET /trending) that returns a "Trending News Feed" tailored to a user's location based on recent user engagement.
+Simulate a Stream of User Events: Introduce a simulated stream of user activity events (e.g., views, clicks) that tie users to specific articles and locations.
+Trending Logic: Process user interaction data to compute a trending score based on volume, recency, and geographical relevance.
+Caching Requirement: Implement caching for trending feeds by location to improve response times (e.g., using geospatial segmentation).
+5. Data Processing, Ranking, and Enrichment
+Process the articles retrieved from the database based on the simulated API endpoint selected.
+Rank the articles for relevance to the user's query:
+For "category" and "source": Rank by publication date (most recent first).
+For "score": Rank by relevance_score (highest first).
+For "search": Rank by a combination of relevance_score and text matching score.
+For "nearby": Rank by distance from the user's location (closest first).
+Enrich the news articles with an LLM-generated summary of the content.
+6. Output
+Return the top 5 most relevant news articles in a JSON format. Each article should include: Title, Description, URL, Publication Date, Source Name, Category, Relevance Score, and LLM-Generated Summary.
+Additional Guidance
+Database Setup: You will need a database server running (local or cloud-managed).
+API Design Considerations: Follow RESTful principles, use appropriate HTTP methods, implement versioning (e.g., /api/v1/news), and ensure robust error handling.
+Output Formatting: Maintain a consistent JSON structure across all endpoints and consider including metadata such as the total number of results and the query used.

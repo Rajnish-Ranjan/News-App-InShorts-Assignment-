@@ -1,0 +1,41 @@
+{
+    "status": "success",
+    "total_results": 226,
+    "results_count": 2,
+    "user_input": {
+        "limit": 2,
+        "category": "business"
+    },
+    "next_cursor": "eyJ2IjogIjIwMjUtMDMtMjZUMDM6MzU6MjMiLCAiaWQiOiAiNDRlOWRiOWUtZDVkOS00MzM0LTlmYjItN2MyMDM2Nzg3NTg2In0=",
+    "articles": [
+        {
+            "llm_summary": "APEDA exports first GI-tagged Sikkim Dalle Chillies.",
+            "id": "e2b3f66b-5021-4475-8c4f-d2e25cc76321",
+            "title": "apeda facilitates export of first gi-tagged dalle chillies ",
+            "description": "APEDA exported the first GI-tagged Dalle Chilly from Sikkim to the Solomon Islands. In collaboration with Sikkim's Agriculture Department and its Guwahati office, APEDA facilitated this export, ensuri...",
+            "url": "https://www.logisticsoutlook.com/business/apeda-export-dalle-chillies",
+            "publication_date": "2025-03-26T03:40:10",
+            "source_name": "logistics outlook",
+            "category": [
+                "business",
+                "national"
+            ],
+            "relevance_score": 0.23
+        },
+        {
+            "llm_summary": "Belgium 'attaches great importance' to Mehul Choksi case.",
+            "id": "44e9db9e-d5d9-4334-9fb2-7c2036787586",
+            "title": "attach great importance to case: belgium on choksi's residency",
+            "description": "Reacting to reports of fugitive Indian businessman Mehul Choksi residing in Belgium, the country's foreign affairs ministry told News18 that it \"attaches great importance to the case\". Choksi, who has...",
+            "url": "https://www.news18.com/amp/india/attach-great-importance-to-case-belgian-govt-to-news18-amid-reports-that-mehul-choksi-is-living-there-9274956.html",
+            "publication_date": "2025-03-26T03:35:23",
+            "source_name": "news18",
+            "category": [
+                "world",
+                "business",
+                "national"
+            ],
+            "relevance_score": 0.53
+        }
+    ]
+}

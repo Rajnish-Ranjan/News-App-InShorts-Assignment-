@@ -1,0 +1,38 @@
+{
+    "status": "success",
+    "total_results": 1011,
+    "results_count": 2,
+    "user_input": {
+        "threshold": 0.5,
+        "limit": 2
+    },
+    "next_cursor": "eyJ2IjogMS4wLCAiaWQiOiAiZDgwOTQyN2UtN2M5ZC00OTY2LWE1ZjYtYzlhM2E3ZmE4Y2UwIn0=",
+    "articles": [
+        {
+            "llm_summary": "Abhay Deol calls parents \"Bollywood hillbillies,\" highlights their village origins.",
+            "id": "e7f184e2-80bb-44f2-94a8-1c2c61d8ec35",
+            "title": "parents are b'wood hillbillies, came to mumbai from village: abhay",
+            "description": "Actor Abhay Deol opened up about his family dynamics in a recent interview and called his parents \"Bollywood hillbillies\". \"My mom is a really simple person, even my dad. They came straight from a vil...",
+            "url": "https://indianexpress.com/article/entertainment/bollywood/abhay-deol-calls-his-parents-bollywood-hillbillies-reveals-his-relationship-with-mother-it-was-not-a-normal-situation-9903157/lite/",
+            "publication_date": "2025-03-25T11:12:24",
+            "source_name": "the indian express",
+            "category": [
+                "entertainment"
+            ],
+            "relevance_score": 1.0
+        },
+        {
+            "llm_summary": "PTPA seeks court order against ATP over \"threatening\" player communications.",
+            "id": "d809427e-7c9d-4966-a5f6-c9a3a7fa8ce0",
+            "title": "ptpa seeks court order against atp tour",
+            "description": "The Professional Tennis Players’ Association (PTPA) is seeking an order from the court to prevent the ATP Tour from having “improper, coercive or threatening communications” with players. It was on Tu...",
+            "url": "https://www.sportstiger.com/news/ptpa-seeks-court-order-to-prevent-atp-tour-from-having-threatening-communications-with-players",
+            "publication_date": "2025-03-22T14:44:18",
+            "source_name": "sports tiger",
+            "category": [
+                "sports"
+            ],
+            "relevance_score": 1.0
+        }
+    ]
+}

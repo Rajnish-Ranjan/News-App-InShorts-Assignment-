@@ -1,0 +1,38 @@
+{
+    "status": "success",
+    "total_results": 43,
+    "results_count": 2,
+    "user_input": {
+        "limit": 2,
+        "query": "AI"
+    },
+    "next_cursor": "eyJ2IjogMS43Mjk5MDg4NTQ5NjEzOTUyLCAiaWQiOiAiMmI2Mjg5MWMtOThkZS00MWUyLWExOTYtOGE0YjEzZDNkNDdmIn0=",
+    "articles": [
+        {
+            "llm_summary": "Google Pixel 9a unveiled with upgrades, limited AI.",
+            "id": "f6b4fccb-0e60-4430-a27c-9d410a4d87ad",
+            "title": "google unveils pixel 9a with upgrades but restricted ai features",
+            "description": "Google unveiled Pixel 9a with a refined design, dual-lens camera, and a 5,100mAh battery. However, limited AI features excluded Pixel Screenshots and Call Notes due to its 8GB RAM. It retained core AI...",
+            "url": "https://www.itvoice.in/google-unveils-pixel-9a-with-upgraded-features-but-limited-ai-capabilities",
+            "publication_date": "2025-03-22T10:58:56",
+            "source_name": "it voice",
+            "category": [
+                "technology"
+            ],
+            "relevance_score": 0.97
+        },
+        {
+            "llm_summary": "Wipro launches AI autonomous agents; shares gain.",
+            "id": "2b62891c-98de-41e2-a196-8a4b13d3d47f",
+            "title": "wipro gains on launching ai-driven autonomous agents",
+            "description": "Wipro has introduced innovative AI-driven autonomous agents for Agentforce. These agents aim to revolutionize experiences for patients, providers, payers, and healthcare companies, while easing the he...",
+            "url": "https://investmentguruindia.com/newsdetail/wipro-rises-on-introducing-innovative-ai-driven-autonomous-agents-for-agentforce358175",
+            "publication_date": "2025-03-25T06:38:11",
+            "source_name": "investment guru india",
+            "category": [
+                "business"
+            ],
+            "relevance_score": 0.97
+        }
+    ]
+}

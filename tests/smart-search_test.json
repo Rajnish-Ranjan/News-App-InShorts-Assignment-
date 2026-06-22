@@ -1,0 +1,66 @@
+{
+    "status": "success",
+    "total_results": 129,
+    "results_count": 4,
+    "user_input": {
+        "limit": 4,
+        "query": "Viral Social Media Posts around me",
+        "lat": 19.076,
+        "lon": 72.8777
+    },
+    "next_cursor": "eyJ2IjogOTYwNzEuNDA4MDkxMTUsICJpZCI6ICI4OTBlNTBmMC03MjE5LTRlMDgtYmI3NC1lZDJhYzc5ZTczODMifQ==",
+    "articles": [
+        {
+            "llm_summary": "Social science scholars need state support for global engagements.",
+            "id": "bd916541-0741-4f7c-a77c-7da44602ceea",
+            "title": "social science scholars’ global engagements need support",
+            "description": "Social Science scholars attending international knowledge summits abroad are compelled to pay the airfare from their pockets, which makes many opt out of such events. A change is necessary to support ...",
+            "url": "https://thesouthfirst.com/opinion/missing-grants-social-science-scholars-global-engagements-need-support-from-states/",
+            "publication_date": "2025-03-22T08:51:36",
+            "source_name": "the south first",
+            "category": [
+                "miscellaneous"
+            ],
+            "relevance_score": 0.78
+        },
+        {
+            "id": "a2f7e73e-c3cc-4768-aa58-8eeff2ac5acc",
+            "title": "video of delhi man who ran his car over dog goes viral",
+            "description": "A disturbing incident surfaced from Delhi where a man ran his car over a dog, resulting in its death and arrogantly defended his action when confronted. The incident which was recorded on camera, spar...",
+            "url": "https://www.freepressjournal.in/india/lo-photoandha-huun-arrogant-delhi-man-runs-car-over-dog-animals-death-sparks-online-outrage-video",
+            "publication_date": "2025-03-22T08:27:20",
+            "source_name": "free press journal",
+            "category": [
+                "miscellaneous"
+            ],
+            "relevance_score": 0.62
+        },
+        {
+            "id": "f454f744-95d5-4dc3-ae2e-3f459c6d5071",
+            "title": "revolutionise your business efficiency with automation",
+            "description": "Marketing automation empowers businesses to automate repetitive tasks, such as sending email campaigns and posting on social media, thereby increasing efficiency and reducing manual workload. This aut...",
+            "url": "https://www.growthjockey.com/blogs/marketing-automation-tools-benefits",
+            "publication_date": "2025-03-24T06:35:05",
+            "source_name": "growthjockey",
+            "category": [
+                "business",
+                "startup",
+                "technology"
+            ],
+            "relevance_score": 0.31
+        },
+        {
+            "llm_summary": "AI-based solutions revolutionize India's public health system.",
+            "id": "890e50f0-7219-4e08-bb74-ed2ac79e7383",
+            "title": "ai-based solutions revolutionising india's public health system",
+            "description": "The Union Health Ministry has designated AIIMS Delhi, PGIMER Chandigarh, and AIIMS Rishikesh as AI Centres of Excellence. Key AI tools like CDSS on e-Sanjeevani, Media Disease Surveillance, and TB det...",
+            "url": "https://health.medicaldialogues.in/health/centre-highlights-ai-based-solutions-revolutionizing-indias-public-health-system-145295",
+            "publication_date": "2025-03-24T05:44:15",
+            "source_name": "medical dialogues",
+            "category": [
+                "health___fitness"
+            ],
+            "relevance_score": 0.58
+        }
+    ]
+}
