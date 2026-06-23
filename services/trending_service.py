@@ -1,14 +1,14 @@
-from repositories import DBConnection
+from repositories import AsyncDBConnection
 from utils import encode_cursor, decode_cursor
 from typing import Any
 from models import User
 
 
 class TrendingService:
-    def __init__(self, db: DBConnection):
+    def __init__(self, db: AsyncDBConnection):
         self.db = db
 
-    def get_trending_news(
+    async def get_trending_news(
         self,
         user_lat: float,
         user_lon: float,
@@ -24,7 +24,7 @@ class TrendingService:
             SELECT 
                 na.id, na.title, na.description, na.url, 
                 na.publication_date, na.source_name, na.category, 
-                tfc.trending_score, count(*) OVER() AS total_results
+                tfc.trending_score
             FROM trending_feed_cache tfc
             JOIN news_articles na ON tfc.article_id = na.id
             WHERE tfc.bounding_box_id = %s
@@ -38,9 +38,7 @@ class TrendingService:
         query += " ORDER BY tfc.trending_score DESC, na.id DESC LIMIT %s;"
         params.extend([limit + 1])
 
-        results = self.db.query(query, tuple(params))
-        total_results = results[0]["total_results"] if results else 0
-
+        results = await self.db.query(query, tuple(params))
         next_cursor = None
         if len(results) > limit:
             last_item = results[limit - 1]
@@ -48,8 +46,8 @@ class TrendingService:
             results.pop()
 
         for r in results:
-            r.pop("total_results", None)
             r.pop("sort_value", None)
             r.pop("trending_score", None)
 
+        total_results = len(results)
         return results, next_cursor, total_results

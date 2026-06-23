@@ -6,32 +6,39 @@ from .text_process import extract_url_tokens
 from google.genai.types import GenerateContentConfig
 from google import genai
 
+import threading
+
 
 class LLM:
     def __init__(self):
+        self._lock = threading.RLock()
         self.api_keys = self._load_all_keys()
         self.current_key_idx = 0
         self._init_client()
 
     def _load_all_keys(self):
-        keys = []
-        if ", " in os.environ.get("GEMINI_API_KEY", ""):
-            keys = os.environ.get("GEMINI_API_KEY", "").split(", ")
-        return keys
+        with self._lock:
+            keys = []
+            if ", " in os.environ.get("GEMINI_API_KEY", ""):
+                keys = os.environ.get("GEMINI_API_KEY", "").split(", ")
+            print("Load keys:", keys)
+            return keys
 
     def _init_client(self):
-        key = (
-            self.api_keys[self.current_key_idx]
-            if self.api_keys
-            else os.getenv("GEMINI_API_KEY")
-        )
-        self.client = genai.Client(api_key=key)
+        with self._lock:
+            key = (
+                self.api_keys[self.current_key_idx]
+                if self.api_keys
+                else os.getenv("GEMINI_API_KEY")
+            )
+            self.client = genai.Client(api_key=key)
 
     def _rotate_key(self):
         if len(self.api_keys) > 1:
-            self.current_key_idx = (self.current_key_idx + 1) % len(self.api_keys)
-            self._init_client()
-            return True
+            with self._lock:
+                self.current_key_idx = (self.current_key_idx + 1) % len(self.api_keys)
+                self._init_client()
+                return True
         return False
 
     # def generate_content(self, model, contents, max_retries=5, base_delay=22):
@@ -46,7 +53,7 @@ class LLM:
             except Exception as e:
                 error_str = str(e)
                 if "permission" in error_str.lower() or (
-                    "429" in error_str or "RESOURCE_EXHAUSTED" in error_str
+                    "429" in error_str or "RESOURCE_EXHAUSTED" in error_str or "503" in error_str or "UNAVAILABLE" in error_str
                 ):
                     print(f"Rate limit hit on API Key #{self.current_key_idx + 1}...")
 
@@ -93,7 +100,7 @@ class LLM:
         description: {description}
         """
         response = self.generate_content("gemini-2.5-flash", prompt.strip(), temperature=0.5)
-        return response.strip()
+        return response.strip() if response else ""
 
 
 if __name__ == "__main__":

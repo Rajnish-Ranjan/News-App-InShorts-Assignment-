@@ -417,7 +417,7 @@ class DBQueryBuilder:
                 if order_by_clause is None:
                     order_by_clause = clause
 
-        query = "SELECT id, title, description, url, publication_date, source_name, category, relevance_score, count(*) OVER() AS total_results"
+        query = "SELECT id, title, description, url, publication_date, source_name, category, relevance_score"
         params = []
 
         if select_clause:

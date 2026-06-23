@@ -5,13 +5,14 @@ from utils import (
     decode_cursor,
 )
 import concurrent.futures
+import asyncio
 
 
-from repositories import DBQueryBuilder, DBConnection
+from repositories import DBQueryBuilder, AsyncDBConnection
 
 
 class QueryService:
-    def __init__(self, llm: LLM, db: DBConnection):
+    def __init__(self, llm: LLM, db: AsyncDBConnection):
         self.llm = llm
         self.db = db
         self.dbquery_builder = DBQueryBuilder()
@@ -71,7 +72,7 @@ class QueryService:
             res.pop()
         return next_cursor
 
-    def process_query(
+    async def process_query(
         self,
         user_query: UserQuery,
         limit: int = 5,
@@ -88,27 +89,29 @@ class QueryService:
 
         print("\nSQL Query:", sql_query)
         print("\nPARAMS:", params)
-        res = self.db.query(sql_query, tuple(params))
-
-        total_results = res[0]["total_results"] if res else 0
+        res = await self.db.query(sql_query, tuple(params))
 
         next_cursor = self._extract_next_cursor(res, limit, cursor_str)
 
         for r in res:
-            r.pop("total_results", None)
             r.pop("sort_value", None)
 
-        enhanced_res = self._inject_llm_summaries(res)
+        enhanced_res = await asyncio.to_thread(self._inject_llm_summaries, res)
+        total_results = len(enhanced_res)
 
         return enhanced_res, next_cursor, total_results
 
 
 if __name__ == "__main__":
     from utils import set_cred_environments
+    import asyncio
 
     set_cred_environments()
-    query_service = QueryService(LLM(), DBConnection())
-    query = "What is happening in the world of AI in 2026?"
-    user_query = UserQuery.from_query(query)
-    result = query_service.process_query(user_query)
-    print(result)
+    async def main():
+        query_service = QueryService(LLM(), AsyncDBConnection())
+        query = "What is happening in the world of AI in 2026?"
+        user_query = UserQuery.from_query(query)
+        result = await query_service.process_query(user_query)
+        print(result)
+
+    asyncio.run(main())

@@ -7,7 +7,7 @@ import sys
 import os
 
 from utils import set_cred_environments, LLM
-from repositories import DBConnection
+from repositories import DBConnection, AsyncDBConnection
 from services import QueryService, TrendingService
 from models import (
     User,
@@ -21,8 +21,29 @@ from models import (
     PaginationParams,
 )
 import uvicorn
+from contextlib import asynccontextmanager
 
-app = FastAPI(title="News App Backend API")
+set_cred_environments()
+
+db = AsyncDBConnection()
+llm = LLM()
+query_service = QueryService(db=db, llm=llm)
+trending_service = TrendingService(db=db)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    try:
+        set_cred_environments()
+        conn_str = f"postgresql://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/{os.environ['DB_NAME']}?sslmode={os.environ['DB_SSLMODE']}"
+        await db.connect(conn_str)
+        yield
+    except Exception as e:
+        print(f"Failed to initialize services: {e}")
+        sys.exit(1)
+    finally:
+        await db.close()
+
+app = FastAPI(title="News App Backend API", lifespan=lifespan)
 
 @app.exception_handler(psycopg.Error)
 async def psycopg_error_handler(request: Request, exc: psycopg.Error):
@@ -60,22 +81,7 @@ async def pydantic_validation_error_handler(request: Request, exc: ValidationErr
     )
 
 
-# Initialize environments and services
-try:
-    set_cred_environments()
-
-    # Initialize DB connection
-    db = DBConnection()
-    conn_str = f"postgresql://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/{os.environ['DB_NAME']}?sslmode={os.environ['DB_SSLMODE']}"
-    db.connect(conn_str)
-
-    llm = LLM()
-
-    query_service = QueryService(db=db, llm=llm)
-    trending_service = TrendingService(db=db)
-except Exception as e:
-    print(f"Failed to initialize services: {e}")
-    sys.exit(1)
+# Initialize environments and services moved to lifespan
 
 
 def _build_user_input(
@@ -93,7 +99,7 @@ def _build_user_input(
 
 
 @app.get("/news/api/v1/category")
-def get_by_category(
+async def get_by_category(
     params: CategoryParams = Depends(),
     x_user_lat: float = Header(
         None, description="Latitude"
@@ -111,7 +117,7 @@ def get_by_category(
         user_query = UserQuery(
             intents=["category"], entities=[], category=params.category, user=user
         )
-        results, next_cursor, total_results = query_service.process_query(
+        results, next_cursor, total_results = await query_service.process_query(
             user_query,
             limit=params.limit,
             cursor_str=params.cursor,
@@ -131,7 +137,7 @@ def get_by_category(
 
 
 @app.get("/news/api/v1/score")
-def get_by_score(
+async def get_by_score(
     params: ScoreParams = Depends(),
     x_user_lat: float = Header(
         None, description="Latitude"
@@ -149,7 +155,7 @@ def get_by_score(
         user_query = UserQuery(
             intents=["score"], entities=[], score_threshold=params.threshold, user=user
         )
-        results, next_cursor, total_results = query_service.process_query(
+        results, next_cursor, total_results = await query_service.process_query(
             user_query,
             limit=params.limit,
             cursor_str=params.cursor,
@@ -169,7 +175,7 @@ def get_by_score(
 
 
 @app.get("/news/api/v1/source")
-def get_by_source(
+async def get_by_source(
     params: SourceParams = Depends(),
     x_user_lat: float = Header(
         None, description="Latitude"
@@ -187,7 +193,7 @@ def get_by_source(
         user_query = UserQuery(
             intents=["source"], entities=[], source=params.source, user=user
         )
-        results, next_cursor, total_results = query_service.process_query(
+        results, next_cursor, total_results = await query_service.process_query(
             user_query,
             limit=params.limit,
             cursor_str=params.cursor,
@@ -207,7 +213,7 @@ def get_by_source(
 
 
 @app.get("/news/api/v1/nearby")
-def get_nearby(
+async def get_nearby(
     params: NearbyParams = Depends(),
     x_user_lat: float = Header(..., description="Latitude"),
     x_user_lon: float = Header(
@@ -219,7 +225,7 @@ def get_nearby(
         user_query = UserQuery(
             intents=["nearby"], entities=[], radius=params.radius, user=user
         )
-        results, next_cursor, total_results = query_service.process_query(
+        results, next_cursor, total_results = await query_service.process_query(
             user_query,
             limit=params.limit,
             cursor_str=params.cursor,
@@ -239,12 +245,12 @@ def get_nearby(
 
 
 @app.get("/news/api/v1/search")
-def get_by_keyword(params: SearchParams = Depends()):
+async def get_by_keyword(params: SearchParams = Depends()):
     try:
         user_query = UserQuery(
             intents=["search"], entities=[], search_query=params.query
         )
-        results, next_cursor, total_results = query_service.process_query(
+        results, next_cursor, total_results = await query_service.process_query(
             user_query, limit=params.limit, cursor_str=params.cursor
         )
         user_input = _build_user_input(params)
@@ -262,7 +268,7 @@ def get_by_keyword(params: SearchParams = Depends()):
 
 
 @app.get("/news/api/v1/smart-search")
-def smart_search_news(
+async def smart_search_news(
     params: SmartSearchParams = Depends(),
     x_user_lat: float = Header(
         None, description="Latitude"
@@ -279,7 +285,7 @@ def smart_search_news(
         )
         user_query = UserQuery.from_query(params.query, llm=query_service.llm)
         user_query.user = user
-        results, next_cursor, total_results = query_service.process_query(
+        results, next_cursor, total_results = await query_service.process_query(
             user_query, limit=params.limit, cursor_str=params.cursor
         )
         user_input = _build_user_input(params, x_user_lat, x_user_lon)
@@ -298,7 +304,7 @@ def smart_search_news(
 
 
 @app.get("/news/api/v1/trending")
-def get_trending_news(
+async def get_trending_news(
     params: PaginationParams = Depends(),
     x_user_lat: float = Header(
         ..., description="Latitude"
@@ -308,7 +314,7 @@ def get_trending_news(
     ),
 ):
     try:
-        results, next_cursor, total_results = trending_service.get_trending_news(
+        results, next_cursor, total_results = await trending_service.get_trending_news(
             user_lat=x_user_lat,
             user_lon=x_user_lon,
             limit=params.limit,

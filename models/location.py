@@ -20,8 +20,8 @@ class Location:
             response = requests.get(url, params=params, headers=headers)
             response.raise_for_status()
             data = response.json()
-            print("Location data:", data[0])
             if data:
+                print("Location data:", data[0])
                 bounding_box = data[0].get("boundingbox", None)
                 lat = float(data[0]["lat"])
                 lon = float(data[0]["lon"])
